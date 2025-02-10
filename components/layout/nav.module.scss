@@ -1,0 +1,41 @@
+
+.nav {
+
+    // position: fixed;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    width: 100%;
+    
+    .logo {
+
+        display: flex;
+        // gap: 0.5rem;
+        align-items: center;
+
+        h3 {
+
+            em {
+                color: #d3430a;
+                font-size: 1.2rem;
+            }
+
+        }
+
+    }
+
+    .circle {
+
+        width: 25px;
+        min-width: 25px;
+        height: 25px;
+        min-height: 25px;
+        border-radius: 10rem;
+        background-color: wheat;
+
+    }
+
+}
