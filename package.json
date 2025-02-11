@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.744.0",
+    "@aws-sdk/credential-providers": "^3.744.0",
+    "@aws-sdk/s3-request-presigner": "^3.744.0",
+    "@aws-sdk/types": "^3.734.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
     "babel-plugin-react-compiler": "^19.0.0-beta-30d8a17-20250209",
     "next": "15.1.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-select": "^5.10.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
