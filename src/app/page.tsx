@@ -3,6 +3,7 @@ import { IProduto } from "../../interfaces/IProduto";
 import { createClient } from "../../utils/supabase/client";
 import styles from "./page.module.css";
 import Image from "next/image";
+import ProdutoCatalogo, { ProdutoCadastro } from "./(components)/ProdutoCatalogo/ProdutoCatalogo";
 
 export default async function Home() {
 
@@ -16,17 +17,8 @@ export default async function Home() {
         <div className={styles.page}>
             <main className={styles.main}>
 
-                {produtos&&produtos.map( (produto: IProduto) =>
-                    <div key={produto.id}>
-                        <h2>{produto.nome}</h2>
-                        <Image 
-                            src={produto.image_url} 
-                            width={100}
-                            height={100}
-                            alt={`imagem do produto ${produto.nome}`} 
-                        />
-                        <h3>{produto.tabela_1}</h3>
-                    </div>
+                {produtos&&produtos.map( (produto: ProdutoCadastro) =>
+                    <ProdutoCatalogo key={produto.id} produto={produto} />
                 )}
 
             </main>

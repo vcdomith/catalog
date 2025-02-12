@@ -8,11 +8,16 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '3mb',
     }
   },
-  // images: {
-  //   remotePatterns: {
-
-  //   }
-  // }
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'd1opibu00aa7rl.cloudfront.net',
+        port: '',
+        pathname: '/uploads/**'
+      }
+    ]
+  }
 };
 
 export default nextConfig;

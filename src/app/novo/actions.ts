@@ -12,6 +12,43 @@ const s3 = new S3Client({
     credentials: fromEnv(),
 })
 
+async function removeBackground(image: File): Promise<File | null> {
+
+    try {
+     
+        const apiKey = process.env.PHOTOROOM_API_KEY;
+        if (!apiKey) throw new Error("Missing PHOTOROOM_API_KEY in environment variables.");
+    
+        const formData = new FormData();
+        formData.append("imageFile", image);
+        formData.append("shadow.mode", "ai.soft");
+        formData.append("padding", "0.1");
+    
+        const response = await fetch("https://image-api.photoroom.com/v2/edit", {
+            method: "POST",
+            headers: {
+            Accept: "image/png, application/json",
+            ContentType: 'multipart/form-data',
+            "x-api-key": apiKey,
+            },
+            body: formData,
+        });
+    
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+    
+        const arrayBuffer = await response.arrayBuffer();
+        const blob = new Blob([arrayBuffer], { type: 'image/png' })
+        return new File([blob], image.name, { type: 'image/png' })
+
+    } catch (error) {
+        console.error(error)
+        return null
+    }
+
+}
+
 async function uploadImage(image: File): Promise<string | null> {
 
     const buffer =  Buffer.from(await image.arrayBuffer())
@@ -30,7 +67,7 @@ async function uploadImage(image: File): Promise<string | null> {
         )
 
         const url = `${process.env.AWS_CLOUDFRONT_URL}/uploads/${image.name}`
-        console.log(url);
+        // console.log(url);
         return url
 
     } catch(error) {
@@ -55,7 +92,11 @@ export default async function createProduto(formData: FormData) {
     }
     // const data = Object.fromEntries(formData)
 
-    const imageUrl = await uploadImage(data.imagem)
+    const processedImage = await removeBackground(data.imagem)
+    if(!processedImage) return
+    console.log(processedImage);
+
+    const imageUrl = await uploadImage(processedImage)
     console.log(imageUrl);
 
     if (!imageUrl) return
@@ -72,7 +113,7 @@ export default async function createProduto(formData: FormData) {
         ativo: true
     }
 
-    console.log(produtoCadastro);
+    // console.log(produtoCadastro);
 
     const { data: produto, error } = await supabase
         .from('produtos')
@@ -82,7 +123,7 @@ export default async function createProduto(formData: FormData) {
     if (error) console.error(error)
 
     console.log(produto);
-    console.log(data);
+    // console.log(data);
 
     revalidatePath('/novo')
 
